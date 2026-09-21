@@ -1,0 +1,11 @@
+NetBIOS Name Table for Target: 192.168.56.10
+
+Name             Type         Flags
+--------------------------------------------------
+DC01             <00> UNIQUE  Workstation / Host Name
+HOMELAB          <00> GROUP   Domain / Workgroup Name
+HOMELAB          <1C> GROUP   Domain Controller Group
+DC01             <20> UNIQUE  File Server / SMB Service
+HOMELAB          <1B> UNIQUE  Domain Master Browser
+
+MAC Address: 08:00:27:21:13:3C

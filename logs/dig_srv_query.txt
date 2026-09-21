@@ -1,0 +1,15 @@
+; <<>> DiG 9.20.29 <<>> SRV _ldap._tcp.dc._msdcs.homelab.local @192.168.56.10
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 14278
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 2
+
+;; QUESTION SECTION:
+;_ldap._tcp.dc._msdcs.homelab.local. IN SRV
+
+;; ANSWER SECTION:
+_ldap._tcp.dc._msdcs.homelab.local. 600 IN SRV 0 100 389 dc01.homelab.local.
+
+;; ADDITIONAL SECTION:
+dc01.homelab.local.     3600    IN      A       192.168.56.10
+
+;; SERVER: 192.168.56.10#53(192.168.56.10) (UDP)
