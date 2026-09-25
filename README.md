@@ -1,5 +1,10 @@
 # Active Directory Domain Services (AD DS) & Domain-Joined Workstation Lab
 
+![Windows Server 2019](https://img.shields.io/badge/Windows_Server-2019-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+![Active Directory](https://img.shields.io/badge/Active_Directory-AD_DS-blue?style=for-the-badge)
+![PowerShell](https://img.shields.io/badge/PowerShell-Automated-5391FE?style=for-the-badge&logo=powershell&logoColor=white)
+![Kerberos & LDAP](https://img.shields.io/badge/Protocols-Kerberos_%7C_LDAP_%7C_SMB-orange?style=for-the-badge)
+
 Implementation details, PowerShell deployment scripts, and DNS/Kerberos telemetry from setting up an Active Directory Domain Controller (`DC01` - `192.168.56.10`) running Windows Server 2019 and a domain-joined Windows 10 workstation (`192.168.56.108`) on a VirtualBox network (`vboxnet0`).
 
 ---
