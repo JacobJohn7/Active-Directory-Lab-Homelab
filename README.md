@@ -1,10 +1,5 @@
 # Active Directory Domain Services (AD DS) & Domain-Joined Workstation Lab
 
-![Windows Server 2019](https://img.shields.io/badge/Windows_Server-2019-0078D6?style=for-the-badge&logo=windows&logoColor=white)
-![Active Directory](https://img.shields.io/badge/Active_Directory-AD_DS-blue?style=for-the-badge)
-![PowerShell](https://img.shields.io/badge/PowerShell-Automated-5391FE?style=for-the-badge&logo=powershell&logoColor=white)
-![Kerberos & LDAP](https://img.shields.io/badge/Protocols-Kerberos_%7C_LDAP_%7C_SMB-orange?style=for-the-badge)
-
 Implementation details, PowerShell deployment scripts, and DNS/Kerberos telemetry from setting up an Active Directory Domain Controller (`DC01` - `192.168.56.10`) running Windows Server 2019 and a domain-joined Windows 10 workstation (`192.168.56.108`) on a VirtualBox network (`vboxnet0`).
 
 ---
@@ -34,9 +29,9 @@ Implementation details, PowerShell deployment scripts, and DNS/Kerberos telemetr
 ## Active Directory Infrastructure Setup
 
 ### 1. Forest & Root Domain Creation (`homelab.local`)
-- **Domain Name:** `homelab.local` (NetBIOS: `HOMELAB`)
-- **Domain Controller:** `dc01.homelab.local` (`192.168.56.10`)
-- **Active Directory Services:** AD DS, AD Integrated DNS, Kerberos KDC, LDAP/LDAPS, Global Catalog.
+- Domain Name: `homelab.local` (NetBIOS: `HOMELAB`)
+- Domain Controller: `dc01.homelab.local` (`192.168.56.10`)
+- Active Directory Services: AD DS, AD Integrated DNS, Kerberos KDC, LDAP/LDAPS, Global Catalog.
 
 ### 2. Organizational Unit (OU) & User Provisioning (`scripts/Deploy-ADLab.ps1`)
 
@@ -60,6 +55,14 @@ New-ADUser -sAMAccountName "analyst01" -GivenName "SOC" -Surname "Analyst" `
 
 Add-ADGroupMember -Identity "Sec_Tier1_SOC" -Members "analyst01"
 ```
+
+### 3. GPO Security Baseline & Advanced Auditing (`scripts/Deploy-AD-GPO-Hardening.ps1`)
+
+Automated GPO creation and security template application (`config/GPO_Sec_Baseline.inf`):
+- **Kerberos Ticket Lifetimes:** User ticket max age set to 10 hours, service tickets to 600 minutes, renew age to 7 days, max clock skew capped at 5 minutes.
+- **Account Lockout Thresholds:** 5 invalid logon attempts triggers a 15-minute lockout with a 15-minute counter reset window.
+- **Protocol Hardening:** SMBv1 disabled, LLMNR multicast resolution disabled via registry GPO (`EnableMulticast = 0`), NTLM restricted to NTLMv2 only (`LMCompatibilityLevel = 5`).
+- **Advanced Audit Subcategories (`logs/auditpol_policy.txt`):** Explicitly enabled Success and Failure logging for Kerberos Authentication Service (Event ID 4768/4771), Kerberos Service Ticket Operations (Event ID 4769), User & Security Group Management (Event IDs 4720, 4732), and Process Creation (Event ID 4688).
 
 ---
 
@@ -121,3 +124,4 @@ Execute the shell script to query AD DNS SRV records and verify service ports:
 
 - **DNS Dependency**: Windows 10 domain join attempts fail with error `DNS name does not exist` if client IPv4 DNS is set to an external resolver (like `1.1.1.1` or pfSense WAN). The client's primary DNS must be set explicitly to the Domain Controller IP `192.168.56.10`.
 - **Clock Synchronization**: Kerberos authentication requires system time alignment within 5 minutes between `DC01` and client workstations. Both VMs are configured to sync RTC to host system time in VirtualBox settings.
+- **Audit Policy Precedence**: Advanced Audit Policy subcategories (`auditpol`) override legacy high-level audit categories. When configuring via Secedit / GPO, verify subcategory enablement via `auditpol /get /category:*`.
