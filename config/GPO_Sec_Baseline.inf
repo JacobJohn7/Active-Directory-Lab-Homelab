@@ -1,0 +1,38 @@
+[System Access]
+MinimumPasswordAge = 1
+MaximumPasswordAge = 90
+MinimumPasswordLength = 14
+PasswordComplexity = 1
+PasswordHistorySize = 24
+ClearTextPassword = 0
+LockoutBadCount = 5
+ResetLockoutCount = 15
+LockoutDuration = 15
+RequireLogonToChangePassword = 0
+ForceLogoffWhenHourExpire = 0
+NewAdministratorName = "LocalAdmin"
+NewGuestName = "Guest"
+SecureSystemPartition = 0
+LSAAnonymousNameLookup = 0
+
+[Kerberos Policy]
+MaxTicketAge = 10
+MaxRenewAge = 7
+MaxServiceAge = 600
+MaxClockSkew = 5
+TicketValidateClient = 1
+
+[Registry Values]
+MACHINE\System\CurrentControlSet\Control\Lsa\LMCompatibilityLevel=4,5
+MACHINE\System\CurrentControlSet\Control\Lsa\RestrictAnonymous=4,1
+MACHINE\System\CurrentControlSet\Control\Lsa\RestrictAnonymousSAM=4,1
+MACHINE\System\CurrentControlSet\Control\Lsa\EveryoneIncludesAnonymous=4,0
+MACHINE\System\CurrentControlSet\Services\LanmanServer\Parameters\SMB1=4,0
+MACHINE\System\CurrentControlSet\Services\LanmanServer\Parameters\RequireSecuritySignature=4,1
+MACHINE\System\CurrentControlSet\Services\LanmanServer\Parameters\EnableSecuritySignature=4,1
+MACHINE\Software\Policies\Microsoft\Windows NT\DNSClient\EnableMulticast=4,0
+
+[Version]
+signature="$CHICAGO$"
+DriverSigningPolicy=IGNORE
+Revision=1
